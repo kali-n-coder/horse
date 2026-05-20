@@ -1,0 +1,18 @@
+{
+  "name": "horse-festival-race",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "firebase": "XDG_CONFIG_HOME=.firebase-config firebase",
+    "deploy:rules": "XDG_CONFIG_HOME=.firebase-config firebase deploy --only firestore:rules,firestore:indexes",
+    "serve": "XDG_CONFIG_HOME=.firebase-config firebase emulators:start --only firestore,auth,hosting"
+  },
+  "devDependencies": {
+    "firebase-tools": "^12.9.1"
+  },
+  "overrides": {
+    "universal-analytics": {
+      "uuid": "8.3.2"
+    }
+  }
+}

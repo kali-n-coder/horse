@@ -1,0 +1,204 @@
+:root {
+  color-scheme: light;
+  --bg: #f5f7f8;
+  --ink: #172026;
+  --muted: #63717a;
+  --line: #d7dee2;
+  --panel: #ffffff;
+  --accent: #0b6e69;
+  --danger: #b42318;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  min-height: 40px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  padding: 0 16px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+input,
+select {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  padding: 8px 10px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px clamp(16px, 4vw, 40px);
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+
+.topbar h1,
+.panel h2 {
+  margin: 0;
+}
+
+.topbar p {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 16px clamp(16px, 4vw, 40px) 40px;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 16px;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.hidden {
+  display: none;
+}
+
+.stack {
+  display: grid;
+  gap: 12px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0 0;
+}
+
+.stats div {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.stats dt {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.stats dd {
+  margin: 4px 0 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sectionTitle span {
+  color: var(--muted);
+}
+
+.track {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.lane {
+  display: grid;
+  grid-template-columns: minmax(84px, 150px) minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.horseName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.rail {
+  position: relative;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background:
+    linear-gradient(90deg, transparent calc(100% - 3px), #b92620 calc(100% - 3px)),
+    repeating-linear-gradient(90deg, #eef3f2, #eef3f2 28px, #e0e8e7 28px, #e0e8e7 30px);
+  overflow: hidden;
+}
+
+.horseIcon {
+  position: absolute;
+  left: 4px;
+  top: 7px;
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  transform: translateX(var(--progress, 0%));
+  transition: transform 0.15s linear;
+}
+
+.betForm,
+.adminGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(140px, 220px) auto;
+  gap: 12px;
+  align-items: end;
+  margin-top: 16px;
+}
+
+.adminGrid {
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 240px);
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  .layout,
+  .stats,
+  .betForm,
+  .adminGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .lane {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,126 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function isOwner(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    function validUserCreate() {
+      return request.resource.data.keys().hasOnly([
+          'displayName',
+          'balance',
+          'createdAt',
+          'updatedAt'
+        ])
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() >= 1
+        && request.resource.data.displayName.size() <= 24
+        && request.resource.data.balance == 0;
+    }
+
+    function validUserSelfUpdate() {
+      return request.resource.data.diff(resource.data).changedKeys()
+        .hasOnly(['displayName', 'balance', 'updatedAt'])
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() >= 1
+        && request.resource.data.displayName.size() <= 24
+        && request.resource.data.balance is number
+        && request.resource.data.balance >= 0
+        && request.resource.data.balance <= resource.data.balance;
+    }
+
+    match /admins/{userId} {
+      allow read: if isAdmin() || isOwner(userId);
+      allow write: if false;
+    }
+
+    match /users/{userId} {
+      allow read: if signedIn();
+      allow create: if isOwner(userId) && validUserCreate();
+      allow update: if isOwner(userId) && validUserSelfUpdate();
+      allow update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /transactions/{transactionId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasOnly([
+          'userId',
+          'type',
+          'amount',
+          'note',
+          'createdBy',
+          'createdAt'
+        ])
+        && request.resource.data.userId is string
+        && request.resource.data.type in ['charge', 'payout', 'adjust']
+        && request.resource.data.amount is number
+        && request.resource.data.createdBy == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    match /horses/{horseId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly([
+          'name',
+          'ownerId',
+          'ownerName',
+          'color',
+          'createdAt',
+          'active'
+        ])
+        && request.resource.data.ownerId == request.auth.uid
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 1
+        && request.resource.data.name.size() <= 20
+        && request.resource.data.active == true;
+      allow update: if signedIn()
+        && resource.data.ownerId == request.auth.uid
+        && request.resource.data.diff(resource.data).changedKeys()
+          .hasOnly(['name', 'color', 'active'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 1
+        && request.resource.data.name.size() <= 20;
+      allow update, delete: if isAdmin();
+    }
+
+    match /races/{raceId} {
+      allow read: if signedIn();
+      allow create, update: if isAdmin();
+      allow delete: if false;
+
+      match /bets/{betId} {
+        allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+        allow create: if signedIn()
+          && request.resource.data.keys().hasOnly([
+            'userId',
+            'userName',
+            'horseId',
+            'horseName',
+            'amount',
+            'createdAt',
+            'settled'
+          ])
+          && request.resource.data.userId == request.auth.uid
+          && request.resource.data.amount is number
+          && request.resource.data.amount > 0
+          && request.resource.data.amount <= 10000
+          && request.resource.data.settled == false;
+        allow update: if isAdmin();
+        allow delete: if false;
+      }
+    }
+  }
+}

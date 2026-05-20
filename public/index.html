@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>文化祭競馬</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>文化祭競馬</h1>
+        <p id="authStatus">接続準備中</p>
+      </div>
+      <button id="signInButton" type="button">入場</button>
+    </header>
+
+    <main class="layout">
+      <section class="panel">
+        <h2>参加者</h2>
+        <form id="profileForm" class="stack">
+          <label>
+            表示名
+            <input id="displayNameInput" maxlength="24" autocomplete="nickname" required>
+          </label>
+          <button type="submit">保存</button>
+        </form>
+        <dl class="stats">
+          <div>
+            <dt>所持通貨</dt>
+            <dd id="balanceText">0</dd>
+          </div>
+          <div>
+            <dt>権限</dt>
+            <dd id="roleText">一般</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="panel">
+        <h2>馬登録</h2>
+        <form id="horseForm" class="stack">
+          <label>
+            馬名
+            <input id="horseNameInput" maxlength="20" required>
+          </label>
+          <label>
+            勝負服カラー
+            <input id="horseColorInput" type="color" value="#d1495b">
+          </label>
+          <button type="submit">登録</button>
+        </form>
+      </section>
+
+      <section class="panel wide">
+        <div class="sectionTitle">
+          <h2>レース</h2>
+          <span id="raceStatus">未作成</span>
+        </div>
+        <div id="track" class="track"></div>
+        <form id="betForm" class="betForm">
+          <label>
+            応援する馬
+            <select id="betHorseSelect"></select>
+          </label>
+          <label>
+            賭け通貨
+            <input id="betAmountInput" type="number" min="1" step="1" value="100">
+          </label>
+          <button type="submit">投票</button>
+        </form>
+      </section>
+
+      <section id="adminPanel" class="panel wide hidden">
+        <h2>管理</h2>
+        <div class="adminGrid">
+          <form id="grantForm" class="stack">
+            <label>
+              付与先
+              <select id="grantUserSelect"></select>
+            </label>
+            <label>
+              付与額
+              <input id="grantAmountInput" type="number" min="1" step="1" value="500">
+            </label>
+            <button type="submit">通貨を付与</button>
+          </form>
+          <div class="stack">
+            <button id="prepareRaceButton" type="button">出走表を作成</button>
+            <button id="startRaceButton" type="button">レース開始</button>
+            <button id="settleRaceButton" type="button">払戻を確定</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <template id="horseRowTemplate">
+      <div class="lane">
+        <span class="horseName"></span>
+        <div class="rail">
+          <span class="horseIcon"></span>
+        </div>
+      </div>
+    </template>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
