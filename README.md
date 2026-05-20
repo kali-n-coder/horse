@@ -4,7 +4,7 @@ GitHub Pages と Firebase Firestore/Auth で動かす、Cloud Functionsなしの
 
 ## 構成
 
-- `public/`: GitHub Pagesで配信する静的ファイル
+- `docs/`: GitHub Pagesで配信する静的ファイル
 - `firestore.rules`: Firestoreの権限ルール
 - `firebase.json`: Firebase CLI用の設定
 
@@ -13,7 +13,7 @@ GitHub Pages と Firebase Firestore/Auth で動かす、Cloud Functionsなしの
 1. Firebase Consoleでプロジェクトを作成する
 2. Authenticationで「匿名」を有効にする
 3. Firestore Databaseを作成する
-4. Webアプリを追加し、表示されたFirebase configを `public/app.js` の `firebaseConfig` に貼る
+4. Webアプリを追加し、表示されたFirebase configを `docs/app.js` の `firebaseConfig` に貼る
 5. 初回ログイン後、自分のUIDを確認する
 6. Firestore Consoleで `admins/{自分のUID}` ドキュメントを作る
 7. `.firebaserc.example` を参考に `.firebaserc` を作り、自分のFirebaseプロジェクトIDを書く
