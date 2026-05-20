@@ -7,6 +7,7 @@ GitHub Pages と Firebase Firestore/Auth で動かす、Cloud Functionsなしの
 - `docs/`: GitHub Pagesで配信する静的ファイル
 - `firestore.rules`: Firestoreの権限ルール
 - `firebase.json`: Firebase CLI用の設定
+- `.github/workflows/pages.yml`: GitHub Pagesへ公開するActions workflow
 
 ## Firebase側で必要な作業
 
